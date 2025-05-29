@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35806.99 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{C9674DCB-5085-4A16-B785-4C70DD1589BD}") = "weatherdata2", "weatherdata2.dtproj", "{369AF174-B15F-0E34-6B2D-C129E60D42CB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{369AF174-B15F-0E34-6B2D-C129E60D42CB}.Development|Default.ActiveCfg = Development
+		{369AF174-B15F-0E34-6B2D-C129E60D42CB}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3AA67C51-1AB7-4D60-B01A-6E16F742DE54}
+	EndGlobalSection
+EndGlobal
