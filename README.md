@@ -138,7 +138,6 @@ WeatherDataPipeline/
     ```bash
     pip install pandas requests
     ```
-    * *(Note: A `requirements.txt` file containing these libraries is recommended for automated installations.)*
 3.  **Configure Python Scripts:**
     * Update **API keys**, **endpoints**, and any other parameters in the Python scripts (e.g., `fetch_real_time_data.py`, `14_day_forecast.py`, etc.). **For security best practices, consider using environment variables or a separate configuration file (not committed to version control) for sensitive information like API keys, rather than hardcoding them directly in the scripts.**
     * Ensure that the Python scripts write the generated CSV files to the directory expected by SSIS.
