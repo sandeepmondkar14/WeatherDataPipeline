@@ -2,50 +2,59 @@
 
 **WeatherDataPipeline** is an end-to-end ETL project that automates the process of extracting weather data from an API, transforming it, and loading it into SQL Server for reporting and visualization in Power BI. This repository demonstrates how to integrate Python, SSIS, SQL Server, and Power BI into one seamless data pipeline.
 
----
+-----
 
 ## Table of Contents
 
-- [Overview](#overview)
-- [Repository Structure](#repository-structure)
-- [Installation & Setup](#installation--setup)
-  - [Database Setup](#database-setup)
-  - [SSIS Package Deployment](#ssis-package-deployment)
-  - [Python Scripts Configuration](#python-scripts-configuration)
-  - [Power BI Dashboard](#power-bi-dashboard)
-- [ETL Workflow](#etl-workflow)
-  - [SSIS Package Blocks](#ssis-package-blocks)
-  - [Python Integration](#python-integration)
-- [Configuration Checklist](#configuration-checklist)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-- [Acknowledgements](#acknowledgements)
+  - [Overview](https://www.google.com/search?q=%23overview)
+  - [Repository Structure](https://www.google.com/search?q=%23repository-structure)
+  - [Installation & Setup](https://www.google.com/search?q=%23installation--setup)
+      - [Database Setup](https://www.google.com/search?q=%23database-setup)
+      - [SSIS Package Deployment](https://www.google.com/search?q=%23ssis-package-deployment)
+      - [Python Scripts Configuration](https://www.google.com/search?q=%23python-scripts-configuration)
+      - [Power BI Dashboard](https://www.google.com/search?q=%23power-bi-dashboard)
+  - [ETL Workflow](https://www.google.com/search?q=%23etl-workflow)
+      - [SSIS Package Blocks](https://www.google.com/search?q=%23ssis-package-blocks)
+      - [Python Integration](https://www.google.com/search?q=%23python-integration)
+  - [Configuration Checklist](https://www.google.com/search?q=%23configuration-checklist)
+  - [Usage](https://www.google.com/search?q=%23usage)
+  - [Contributing](https://www.google.com/search?q=%23contributing)
+  - [License](https://www.google.com/search?q=%23license)
+  - [Acknowledgements](https://www.google.com/search?q=%23acknowledgements)
 
----
+-----
 
 ## Overview
 
-This project automates the following process:
+This project implements an automated, end-to-end **Extract, Transform, Load (ETL)** data pipeline for weather information. The core workflow involves:
 
-1.  **Cleanup:** SSIS deletes all existing CSV files.
-2.  **Data Retrieval:** Python scripts fetch real-time weather data from an API (specifically, **OpenWeatherMap**). The JSON responses are converted to CSV files and saved.
-3.  **Staging:** SSIS truncates existing staging tables in SQL Server, loads the new CSV data into these tables, and drops existing views.
-4.  **Dimension Build:** Data is processed from staging tables to extract and build dimension tables.
-5.  **Fact Build:** Data is processed from staging tables to extract and build fact tables after truncating existing fact tables.
-6.  **Reporting Dimensions (rpt_dims):** Views for each dimension are created.
-7.  **Reporting Facts (rpt_fact):** Views for each fact are created.
+1.  **Data Extraction:** Orchestrated by the SSIS package, Python scripts fetch four distinct categories of weather data from the OpenWeatherMap API:
+    * **Real-time weather conditions**
+    * **24-hour hourly forecasts**
+    * **14-day daily forecasts**
+    * **Historical hourly observations**
+    This extracted data is then processed and saved into separate CSV files.
+2.  **Data Loading & Transformation (ETL via SSIS):** The SSIS package continues to orchestrate the loading of these CSV files into a SQL Server database. Within SSIS, data undergoes cleaning, transformation, and integration into a structured star schema (staging, dimension, and fact tables) for analytical purposes.
+3.  **Data Reporting & Visualization:** The processed and organized data in SQL Server is then connected to a Power BI dashboard, enabling interactive reporting and insightful visualizations of current conditions, historical trends, and future forecasts.
 
-Finally, Power BI utilizes these reporting views to create interactive visualizations.
+This pipeline ensures fresh weather data is regularly available for analysis, providing a comprehensive view of weather patterns and their potential impacts.
 
----
+-----
 
 ## Repository Structure
 
+```
 WeatherDataPipeline/
 ├── Documentation/
+│   ├── delete csv.JPG
+│   ├── dimensions builds.JPG
+│   ├── fact builds.JPG
+│   ├── get realtime data.JPG
+│   ├── rpt_dimensions.JPG
+│   ├── rpt_facts.JPG
 │   ├── ssis package.JPG
-│   └── ssms data model.JPG
+│   ├── ssms data model.JPG
+│   └── staging.JPG
 ├── powerbi files/
 │   └── weatherdata.pbix
 ├── python scripts/
@@ -73,9 +82,10 @@ WeatherDataPipeline/
 │   ├── weatherdata2.dtproj.user
 │   └── weatherdata2.sln
 └── README.md
+```
 
 
--   **Documentation:** Includes detailed images of the SSIS package components, database diagrams, and the overall SSIS package flow.
+-   **Documentation:** Includes detailed images of the SSIS package components, database diagrams, and various Power BI dashboard screenshots for different analysis pages.
 -   **powerbi files:** Contains the Power BI dashboard file for data visualization.
 -   **python scripts:** Contains the Python code for fetching data from the weather API and converting JSON responses to CSV format.
 -   **sql scripts:** Contains SQL scripts to create schemas, staging, dimension, and fact tables.
@@ -139,6 +149,17 @@ WeatherDataPipeline/
 2.  Configure the data source connection(s) to point to your SQL Server.
 3.  Refresh the dataset to visualize the latest weather insights.
 4.  Interact with the dashboard to explore detailed weather trends.
+
+#### Dashboard Pages and Insights:
+
+The `weatherdata.pbix` dashboard features several interactive pages to provide comprehensive weather analysis:
+
+* **Introduction Page:** A welcome page setting the stage for the "Real-time Weather Analysis" presented by Sandeep Mondkar.
+* **Current Weather Page:** Displays real-time weather conditions for a selected city (e.g., Halifax). Key metrics include Current Temperature (°C), "Feels Like" temperature, Humidity, Weather Condition (e.g., "broken clouds"), Wind Speed, Wind Direction, and Last Recorded Time.
+* **Trend Analysis Page:** Provides visualizations for temperature forecasts: "Last 24-Hour Temperature Forecast" showing historical temperature trends; "Next 24-Hour Temperature Forecast" projecting immediate future temperature changes; "14-Day Temperature Forecast" for long-term temperature outlook. Includes a city selector to view trends for different locations.
+* **What Affects Temperature? Page:** Utilizes a decomposition tree or similar visual to break down temperature variations based on factors like City, Humidity, Weather condition, and Wind Speed. This page helps in understanding the drivers behind observed temperature differences.
+* **Q&A Page:** Features a "Temperature Distribution Across Cities" map, visually representing temperature patterns across North America. Includes a Q&A visual or card, allowing for natural language queries to explore data, such as the "Sum of TemperatureCelsius" for a specific city.
+* **Conclusion Page:** Summarizes key findings from the analysis: Real-time conditions vary significantly (e.g., Toronto/Vancouver mild, Edmonton/Regina colder); Rapid temperature fluctuations are noted in some regions, influenced by wind patterns and humidity; Upcoming weather shows stable temperatures in some areas, with increased wind activity and possible precipitation in others; Long-term forecasts reveal warmer conditions in southern regions and colder trends in the north; Humidity and wind speed play a crucial role in temperature variations, with strong winds often linked to sudden temperature drops.
 
 ---
 
